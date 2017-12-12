@@ -4,6 +4,9 @@ int fps = 60;
 void setup(){
   //size(600,600);
   fullScreen();
+  
+  fill(255);
+  stroke(0);
 
   cols = width / resolution;
   rows = height / resolution;
@@ -25,8 +28,6 @@ void draw(){
       int y = j * resolution;
       
       if(grid[i][j] == 1){
-        fill(255);
-        stroke(0);
         rect(x,y,resolution-1, resolution-1);
       }
     }
@@ -70,7 +71,13 @@ int countNeighbors(int[][] grid,int x, int y){
 void mouseDragged(){  
   int i = floor(mouseX / resolution);
   int j = floor(mouseY / resolution);
-  grid[i][j] = 1;
+  grid[i][j] = (grid[i][j] == 1) ? 0 : 1;
+}
+
+void mousePressed(){
+  int i = floor(mouseX / resolution);
+  int j = floor(mouseY / resolution);
+  grid[i][j] = (grid[i][j] == 1) ? 0 : 1;
 }
 
 void mouseWheel(MouseEvent e){
