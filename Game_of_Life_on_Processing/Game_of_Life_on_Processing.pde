@@ -1,15 +1,17 @@
 int grid[][];
 int cols, rows, resolution = 5;
 int fps = 60;
+
+ControlPanel controlPanel;
+
+int control_panel_height = 60;
 void setup(){
-  //size(600,600);
-  fullScreen();
-  
-  fill(255);
-  stroke(0);
+  size(400,400);
+  //fullScreen();
+  controlPanel = new ControlPanel(); 
 
   cols = width / resolution;
-  rows = height / resolution;
+  rows = (height) / resolution;
   
   grid = new int[cols][rows];
   for(int i=0; i<cols; i++){
@@ -20,7 +22,7 @@ void setup(){
 }
 
 void draw(){
-  background(0);
+  background(20);
   frameRate(fps);
   for(int i=0; i<cols; i++){
     for(int j=0; j<rows; j++){
@@ -28,6 +30,8 @@ void draw(){
       int y = j * resolution;
       
       if(grid[i][j] == 1){
+        fill(255);
+        stroke(0);
         rect(x,y,resolution-1, resolution-1);
       }
     }
@@ -52,6 +56,12 @@ void draw(){
   }
   
   grid = next;
+  
+  //top panel
+  controlPanel.createButton(5,5,50,50);
+  controlPanel.draw();
+  
+  
 }
 
 int countNeighbors(int[][] grid,int x, int y){
@@ -68,16 +78,15 @@ int countNeighbors(int[][] grid,int x, int y){
   return sum;
 }
 
-void mouseDragged(){  
-  int i = floor(mouseX / resolution);
-  int j = floor(mouseY / resolution);
-  grid[i][j] = (grid[i][j] == 1) ? 0 : 1;
+void mouseDragged(){
+  changeCell();
+}
+void mousePressed(){
+  changeCell();
 }
 
-void mousePressed(){
-  int i = floor(mouseX / resolution);
-  int j = floor(mouseY / resolution);
-  grid[i][j] = (grid[i][j] == 1) ? 0 : 1;
+void mouseClicked(){
+  controlPanel.clicked();
 }
 
 void mouseWheel(MouseEvent e){
@@ -87,4 +96,15 @@ void mouseWheel(MouseEvent e){
   }else{
     fps += -event;
   }
+}
+
+void changeCell(){
+  int x = floor(mouseX / resolution);
+  int y = floor((mouseY) / resolution);
+  
+  drawPoint(x,y);
+}
+
+void drawPoint(int x,int y){
+  grid[x][y] = (grid[x][y] == 1) ? 0 : 1;
 }
