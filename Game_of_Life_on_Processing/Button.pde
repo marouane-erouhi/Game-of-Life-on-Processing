@@ -24,9 +24,10 @@ class Button{
     }
   }
   
-  void clicked(){
-    if(!hover())  return;
-    println("lkfd");
+  public boolean clicked(){
+    if(!hover())  return false;
+    println("lkfd"+mouseX);
+    return true;
   }
   
 }
