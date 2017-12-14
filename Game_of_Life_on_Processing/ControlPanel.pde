@@ -14,7 +14,7 @@ class ControlPanel{
     this.thickness = 60;
     pos = new PVector(0,0);
     buttons = new ArrayList<Button>();
-    openClose = new Button(width-20, 0, 20, 10);
+    openClose = new Button(width-20, 0, 20, 10, "togglePanel");
     
   }
   ControlPanel(int x, int y, int thickness){
@@ -40,8 +40,8 @@ class ControlPanel{
     
   }
   //5,5,50,50
-  void createButton(int x, int y, int w, int h){
-    this.buttons.add(new Button(x,y,w,h));
+  void createButton(int x, int y, int w, int h, String buttonName){
+    this.buttons.add(new Button(x,y,w,h,buttonName));
   }
   
   void clicked(){

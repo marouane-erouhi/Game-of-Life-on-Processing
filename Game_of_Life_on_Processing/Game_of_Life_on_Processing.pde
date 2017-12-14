@@ -58,7 +58,7 @@ void draw(){
   grid = next;
   
   //top panel
-  controlPanel.createButton(5,5,50,50);
+  controlPanel.createButton(5,5,50,50, "drawDot");
   controlPanel.draw();
   
   
