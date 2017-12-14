@@ -105,6 +105,37 @@ void changeCell(){
   drawPoint(x,y);
 }
 
+//SHAPES
 void drawPoint(int x,int y){
   grid[x][y] = (grid[x][y] == 1) ? 0 : 1;
+}
+//start from top left cell
+void drawBlock(int x, int y){
+  grid[x][y] = 1;
+  grid[x+1][y] = 1;
+  grid[x][y+1] = 1;
+  grid[x+1][y+1] = 1;
+}
+void drawBeehive(int x, int y){
+  grid[x+1][y] = 1;
+  grid[x+2][y] = 1;
+  
+  grid[x+1][y+2] = 1;
+  grid[x+2][y+2] = 1;
+  
+  grid[x][y+1] = 1;
+  grid[x+3][y+1] = 1;
+}
+void drawBlinker(int x, int y){
+  grid[x][y] = 1;
+  grid[x+1][y] = 1;
+  grid[x+2][y] = 1;
+}
+void drawToad(int x, int y){
+  drawBlinker(x+1,y);
+  drawBlinker(x,y+1);
+}
+void drawBeacon(int x, int y){
+  drawBlock(x,y);
+  drawBlock(x+2,y+2);
 }
