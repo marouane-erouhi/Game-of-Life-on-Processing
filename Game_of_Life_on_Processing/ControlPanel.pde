@@ -44,18 +44,20 @@ class ControlPanel{
     this.buttons.add(new Button(x,y,w,h,buttonName));
   }
   
-  void clicked(){
+  String clicked(){
     //click buttons
     if(panelOpen){
       for(Button btn : this.buttons){
         btn.clicked();
+        return btn.name;
       }
-    }  
+    }
     
     //open close panel
     if(openClose.clicked()){
       this.dropDownBtn();
     }
+    return "";
 }
   
   void dropDownBtn(){

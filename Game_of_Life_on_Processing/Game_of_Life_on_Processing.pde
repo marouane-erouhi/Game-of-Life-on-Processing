@@ -1,14 +1,29 @@
+import controlP5.*;
+
 int grid[][];
 int cols, rows, resolution = 5;
 int fps = 60;
+String currentShape = "Point";
 
-ControlPanel controlPanel;
+ControlP5 cp5;
+ButtonBar b;
+
+
 
 int control_panel_height = 60;
+
+
 void setup(){
   size(400,400);
   //fullScreen();
-  controlPanel = new ControlPanel(); 
+  //controlPanel = new ControlPanel(); 
+  
+  cp5 = new ControlP5(this);
+
+  b = cp5.addButtonBar("bar")
+     .setPosition(0, 0)
+     .setSize(400, 20)
+     .addItems(split("Point Block Beehive Blinker Toad Beacon"," "));
 
   cols = width / resolution;
   rows = (height) / resolution;
@@ -58,10 +73,44 @@ void draw(){
   grid = next;
   
   //top panel
-  controlPanel.createButton(5,5,50,50, "drawDot");
-  controlPanel.draw();
+  //controlPanel.createButton(5,5,50,50, "drawDot");
+  //controlPanel.createButton(60,5,50,50, "drawBlock");
+  //controlPanel.draw();
   
   
+}
+
+void controlEvent(ControlEvent e) {
+  if(e.isController()) {
+    if(e.getController().getValue() == 0)  currentShape = "drawPoint";
+    println(currentShape);
+    switch(floor(e.getController().getValue())){
+      //drawBlinker drawToad drawBeacon
+      case 0:
+        currentShape = "Point";
+        break;
+      case 1:
+        currentShape = "Block";
+        break;
+      case 2:
+        currentShape = "Beehive";
+        break;
+      case 3:
+        currentShape = "Blinker";
+        break;
+      case 4:
+        currentShape = "Toad";
+        break;
+      case 5:
+        currentShape = "Beacon";
+        break;
+      default:
+        currentShape = "Point";
+    }
+    
+    print("control event from : "+e.getController().getName());
+    println(", value : "+e.getController().getValue());
+  }
 }
 
 int countNeighbors(int[][] grid,int x, int y){
@@ -85,8 +134,11 @@ void mousePressed(){
   changeCell();
 }
 
-void mouseClicked(){
-  controlPanel.clicked();
+void mouseClicked(){//also in ControlPanel
+  int x = floor(mouseX / resolution);
+  int y = floor((mouseY) / resolution);
+  //clickedButton = controlPanel.clicked();
+  //currentShape = (clickedButton != "") ? clickedButton : "drawPoint";
 }
 
 void mouseWheel(MouseEvent e){
@@ -102,7 +154,33 @@ void changeCell(){
   int x = floor(mouseX / resolution);
   int y = floor((mouseY) / resolution);
   
-  drawPoint(x,y);
+  
+
+  try{
+    switch(currentShape){
+    //drawBlinker drawToad drawBeacon
+      case "Point":
+        drawPoint(x,y);
+        break;
+      case "Block":
+        drawBlock(x,y);
+        break;
+      case "Beehive":
+        drawBeehive(x,y);
+        break;
+      case "Blinker":
+        drawBlinker(x,y);
+        break;
+      case "Toad":
+        drawToad(x,y);
+        break;
+      case "Beacon":
+        drawBeacon(x,y);
+        break;
+    }
+  
+  }catch(Exception e){}
+  
 }
 
 //SHAPES
