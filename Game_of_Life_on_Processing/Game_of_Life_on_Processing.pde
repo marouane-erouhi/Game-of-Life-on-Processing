@@ -34,14 +34,14 @@ void setup() {
   //  .setSize(width, buttonHight)
   //  .addItems(topBarButtons);
 
-  String[] bottomBarButtons = {"Play/Pause", "Toggle Top-Bar"};
+  String[] bottomBarButtons = {"Play/Pause", "Toggle Top-Bar", "Clear"};
   bottomBar = cp5.addButtonBar("bottom-bar")
     .setPosition(0, height-buttonHight)
-    .setSize(width-100, buttonHight)
+    .setSize(width, buttonHight)
     .addItems(bottomBarButtons);
 
 
-  List stillLivesList = Arrays.asList("Point", "Block", "Beehive");
+  List stillLivesList = Arrays.asList("Point", "Block", "Beehive", "Loaf", "Boat", "Tub");
   /* add a ScrollableList, by default it behaves like a DropdownList */
   cp5.addScrollableList("Still lives")
     .setPosition(0, 0)
@@ -50,9 +50,10 @@ void setup() {
     .setItemHeight(buttonHight)
     .addItems(stillLivesList)
     .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    .setOpen(false)
     ;
 
-  List oscillatorsList = Arrays.asList("Blinker", "Toad", "Beacon");
+  List oscillatorsList = Arrays.asList("Blinker", "Toad", "Beacon","Pulsar", "Pentadecathlon");
   /* add a ScrollableList, by default it behaves like a DropdownList */
   cp5.addScrollableList("Oscillators")
     .setPosition(width/3, 0)
@@ -61,9 +62,10 @@ void setup() {
     .setItemHeight(buttonHight)
     .addItems(oscillatorsList)
     .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    .setOpen(false)  
     ;
 
-  List spaceshipsList = Arrays.asList("Glider");
+  List spaceshipsList = Arrays.asList("Glider","Lightweight spaceship");
   /* add a ScrollableList, by default it behaves like a DropdownList */
   cp5.addScrollableList("Spaceships")
     .setPosition(width/3*2, 0)
@@ -72,6 +74,7 @@ void setup() {
     .setItemHeight(buttonHight)
     .addItems(spaceshipsList)
     .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    .setOpen(false)  
     ;
 
   //UI *********************
@@ -130,7 +133,6 @@ void draw() {
 
 void controlEvent(ControlEvent e) {
   if (e.isController()) {
-    println(currentShape);
     //Still lives dropdown
     if (e.getController().getName().equals("Still lives")) {
       switch(floor(e.getController().getValue())) {
@@ -144,13 +146,13 @@ void controlEvent(ControlEvent e) {
         currentShape = "Beehive";
         break;
       case 3:
-        currentShape = "Blinker";
+        currentShape = "Loaf";
         break;
       case 4:
-        currentShape = "Toad";
+        currentShape = "Boat";
         break;
       case 5:
-        currentShape = "Beacon";
+        currentShape = "Tub";
         break;
       default:
         currentShape = "Point";
@@ -180,6 +182,9 @@ void controlEvent(ControlEvent e) {
       case 0:
         currentShape = "Glider";
         break;
+      case 1:
+        currentShape = "Lightweight spaceship";
+        break;
       default:
         currentShape = "Point";
       }
@@ -200,6 +205,10 @@ void controlEvent(ControlEvent e) {
           topBar.setPosition(0, 0);
           topBarOpen = true;
         }
+      case 2://clear
+        for (int[] row: grid)
+          Arrays.fill(row, 0);
+        break;
       }
     }
 
@@ -223,20 +232,9 @@ int countNeighbors(int[][] grid, int x, int y) {
   return sum;
 }
 
-void mouseDragged() {
-  changeCell();
-}
 void mousePressed() {
-  changeCell();
+    changeCell();
 }
-
-void mouseClicked() {//also in ControlPanel
-  int x = floor(mouseX / resolution);
-  int y = floor((mouseY) / resolution);
-  //clickedButton = controlPanel.clicked();
-  //currentShape = (clickedButton != "") ? clickedButton : "drawPoint";
-}
-
 void mouseWheel(MouseEvent e) {
   float event = e.getCount();
   if (fps <= 1) {
@@ -273,6 +271,21 @@ void changeCell() {
     case "Beacon":
       drawBeacon(x, y);
       break;
+    case "Loaf":
+      drawLoaf(x,y);
+      break;
+    case "Boat":
+      drawBoat(x,y);
+      break;
+    case "Tub":
+      drawTub(x,y);
+      break;
+    case "Glider":
+      drawGlider(x,y);
+      break;
+    case "Lightweight spaceship":
+      drawLightweightSpaceship(x,y);
+      break;
     }
   }
   catch(Exception e) {
@@ -301,9 +314,9 @@ void drawBeehive(int x, int y) {
   grid[x+3][y+1] = 1;
 }
 void drawBlinker(int x, int y) {
+  grid[x-1][y] = 1;
   grid[x][y] = 1;
   grid[x+1][y] = 1;
-  grid[x+2][y] = 1;
 }
 void drawToad(int x, int y) {
   drawBlinker(x+1, y);
@@ -313,24 +326,44 @@ void drawBeacon(int x, int y) {
   drawBlock(x, y);
   drawBlock(x+2, y+2);
 }
-void drawLoaf(int x, int y){//redo
+void drawLoaf(int x, int y){
   grid[x+1][y] = 1;
-  drawPoint(x+2,y);
-  drawPoint(x,y+1);
-  drawPoint(x+3,y+1);
-  drawPoint(x+1,y+2);
-  drawPoint(x+3,y+2);
-  drawPoint(x+2,y+3);
+  grid[x+2][y] = 1;
+  grid[x][y+1] = 1;
+  grid[x+3][y+1] = 1;
+  grid[x+1][y+2] = 1;
+  grid[x+3][y+2] = 1;
+  grid[x+2][y+3] = 1;
 }
 
-void drawBoat(int x, int y){//redo
+void drawBoat(int x, int y){
   drawBlock(x,y);
   grid[x+1][y+1] = 0;
-  
+  grid[x+2][y+1] = 1;
+  grid[x+1][y+2] = 1;
 }
 
 void drawTub(int x, int y){
+  drawBoat(x,y);
+  grid[x][y] = 0;
+}
+
+void drawGlider(int x, int y){
+  drawBlock(x+1,y+1);
+  grid[x+1][y+1] = 0;
+  grid[x][y+1] = 1;
+  grid[x+2][y] = 1;
+}
+
+void drawLightweightSpaceship(int x, int y){
   grid[x+1][y] = 1;
   grid[x][y+1] = 1;
+  grid[x+4][y] = 1;
+  grid[x+4][y+2] = 1;
   
+  drawBlock(x,y+2);
+  grid[x+1][y+2] = 0;
+  
+  grid[x+2][y+3] = 1;
+  grid[x+3][y+3] = 1;
 }
