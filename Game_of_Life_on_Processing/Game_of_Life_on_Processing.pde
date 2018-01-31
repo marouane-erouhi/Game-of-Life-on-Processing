@@ -14,8 +14,9 @@ boolean topBarOpen = true;
 int fps = 60;
 String currentShape = "Point";
 
-ControlP5 cp5;
-ButtonBar topBar, bottomBar;
+//ControlP5 cp5;
+//ButtonBar bottomBar;
+UI ui;
 
 int buttonHight = 20;
 
@@ -23,57 +24,7 @@ void setup() {
   size(400, 400);
   //fullScreen();
 
-
-
-  //UI *********************
-
-  cp5 = new ControlP5(this);
-
-  String[] bottomBarButtons = {"Play/Pause", "Clear"};
-  bottomBar = cp5.addButtonBar("bottom-bar")
-    .setPosition(0, height-buttonHight)
-    .setSize(width, buttonHight)
-    .addItems(bottomBarButtons);
-
-
-  List stillLivesList = Arrays.asList("Point", "Block", "Beehive", "Loaf", "Boat", "Tub");
-  /* add a ScrollableList, by default it behaves like a DropdownList */
-  cp5.addScrollableList("Still lives")
-    .setPosition(0, 0)
-    .setSize(width/3, 100)
-    .setBarHeight(buttonHight)
-    .setItemHeight(buttonHight)
-    .addItems(stillLivesList)
-    .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
-    .setOpen(false)
-    ;
-
-  List oscillatorsList = Arrays.asList("Blinker", "Toad", "Beacon","Pulsar", "Pentadecathlon");
-  /* add a ScrollableList, by default it behaves like a DropdownList */
-  cp5.addScrollableList("Oscillators")
-    .setPosition(width/3, 0)
-    .setSize(width/3, 100)
-    .setBarHeight(buttonHight)
-    .setItemHeight(buttonHight)
-    .addItems(oscillatorsList)
-    .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
-    .setOpen(false)  
-    ;
-
-  List spaceshipsList = Arrays.asList("Glider","Lightweight spaceship");
-  /* add a ScrollableList, by default it behaves like a DropdownList */
-  cp5.addScrollableList("Spaceships")
-    .setPosition(width/3*2, 0)
-    .setSize(width/3, 100)
-    .setBarHeight(buttonHight)
-    .setItemHeight(buttonHight)
-    .addItems(spaceshipsList)
-    .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
-    .setOpen(false)  
-    ;
-
-  //UI *********************
-
+  ui = new UI(this);
 
   cols = width / resolution;
   rows = (height) / resolution;
@@ -127,82 +78,7 @@ void draw() {
 }
 
 void controlEvent(ControlEvent e) {
-  if (e.isController()) {
-    //Still lives dropdown
-    if (e.getController().getName().equals("Still lives")) {
-      switch(floor(e.getController().getValue())) {
-      case 0:
-        currentShape = "Point";
-        break;
-      case 1:
-        currentShape = "Block";
-        break;
-      case 2:
-        currentShape = "Beehive";
-        break;
-      case 3:
-        currentShape = "Loaf";
-        break;
-      case 4:
-        currentShape = "Boat";
-        break;
-      case 5:
-        currentShape = "Tub";
-        break;
-      default:
-        currentShape = "Point";
-      }
-    }//Still lives dropdown
-
-    //Oscillators dropdown
-    if (e.getController().getName().equals("Oscillators")) {
-      switch(floor(e.getController().getValue())) {
-      case 0:
-        currentShape = "Blinker";
-        break;
-      case 1:
-        currentShape = "Toad";
-        break;
-      case 2:
-        currentShape = "Beacon";
-        break;
-      default:
-        currentShape = "Point";
-      }
-    }    //Oscillators dropdown
-    
-    //Spaceships dropdown
-    if (e.getController().getName().equals("Spaceships")) {
-      switch(floor(e.getController().getValue())) {
-      case 0:
-        currentShape = "Glider";
-        break;
-      case 1:
-        currentShape = "Lightweight spaceship";
-        break;
-      default:
-        currentShape = "Point";
-      }
-    }    //Spaceships dropdown
-
-
-    //bottom-bar logic
-    if (e.getController().getName().equals("bottom-bar")) {
-      switch(floor(e.getController().getValue())) {
-      case 0:
-        paused = !paused;
-        break;
-      case 1://clear
-        for (int[] row: grid)
-          Arrays.fill(row, 0);
-        break;
-      }
-    }
-
-
-    print("control event from : "+e.getController().getName());
-    println(", value : "+e.getController().getValue());
-  }
+  ui.handdleEvents(e);
 }
 
 int countNeighbors(int[][] grid, int x, int y) {
@@ -234,8 +110,6 @@ void mouseWheel(MouseEvent e) {
 void changeCell() {
   int x = floor(mouseX / resolution);
   int y = floor((mouseY) / resolution);
-
-
 
   try {
     switch(currentShape) {
@@ -275,7 +149,7 @@ void changeCell() {
       break;
     }
   }
-  catch(Exception e) {
+  catch(Exception e) {//edges cause an out of bounds for larger objects
   }
 }
 
