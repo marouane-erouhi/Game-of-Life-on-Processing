@@ -6,27 +6,20 @@ TODO:
  */
 
 int grid[][];
-//GridShapes GridShapes;
 int cols, rows, resolution = 5;
-
 boolean paused = false;
-boolean topBarOpen = true;
 
-int fps = 60;
+int fps = 30;
 String currentShape = "Point";
 
-//ControlP5 cp5;
-//ButtonBar bottomBar;
 UI ui;
-
 int buttonHight = 20;
 
 void setup() {
   size(400, 400);
   //fullScreen();
 
-  ui = new UI(this);
-  //GridShapes = new GridShapes(grid);
+  ui = new UI(this,buttonHight);
 
   cols = width / resolution;
   rows = (height) / resolution;
@@ -44,6 +37,7 @@ void draw() {
   frameRate(fps);
 
 
+  //show function
   for (int i=0; i<cols; i++) {
     for (int j=0; j<rows; j++) {
       int x = i * resolution;
@@ -55,8 +49,9 @@ void draw() {
         rect(x, y, resolution-1, resolution-1);
       }
     }
-  }
+  }//end of show function
 
+  //update function
   if (!paused) {
     int next[][] = new int[cols][rows];
 
@@ -76,7 +71,7 @@ void draw() {
       }
     }
     grid = next;
-  }
+  }//end of update function
 }
 
 void controlEvent(ControlEvent e) {

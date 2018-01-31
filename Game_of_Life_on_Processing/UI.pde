@@ -1,11 +1,11 @@
-
-
+//This class is resposible for all the UI components and there behaviour
 public class UI {
-
   private ControlP5 cp5;
   private ButtonBar bottomBar;
+  private int buttonHight;
 
-  UI(processing.core.PApplet screen) {
+  UI(processing.core.PApplet screen, int buttonHight) {
+    this.buttonHight = buttonHight;
     cp5 = new ControlP5(screen);
 
     //bottom controll bar
@@ -15,39 +15,39 @@ public class UI {
       .setSize(width, buttonHight)
       .addItems(bottomBarButtons);
 
-    List stillLivesList = Arrays.asList("Point", "Block", "Beehive", "Loaf", "Boat", "Tub");
-    /* add a ScrollableList, by default it behaves like a DropdownList */
+    //still lives dropdown button
+    String[] stillLivesList = {"Point", "Block", "Beehive", "Loaf", "Boat", "Tub"};
     cp5.addScrollableList("Still lives")
       .setPosition(0, 0)
       .setSize(width/3, 100)
       .setBarHeight(buttonHight)
       .setItemHeight(buttonHight)
       .addItems(stillLivesList)
-      .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+      .setType(ScrollableList.LIST)
       .setOpen(false)
       ;
 
-    List oscillatorsList = Arrays.asList("Blinker", "Toad", "Beacon", "Pulsar", "Pentadecathlon");
-    /* add a ScrollableList, by default it behaves like a DropdownList */
+    //oscillators dropdown button
+    String[] oscillatorsList = {"Blinker", "Toad", "Beacon", "Pulsar", "Pentadecathlon"};
     cp5.addScrollableList("Oscillators")
       .setPosition(width/3, 0)
       .setSize(width/3, 100)
       .setBarHeight(buttonHight)
       .setItemHeight(buttonHight)
       .addItems(oscillatorsList)
-      .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+      .setType(ScrollableList.LIST)
       .setOpen(false)  
       ;
 
-    List spaceshipsList = Arrays.asList("Glider", "Lightweight spaceship");
-    /* add a ScrollableList, by default it behaves like a DropdownList */
+    //spaceships dropdown button
+    String[] spaceshipsList = {"Glider", "Lightweight spaceship"};
     cp5.addScrollableList("Spaceships")
       .setPosition(width/3*2, 0)
       .setSize(width/3, 100)
       .setBarHeight(buttonHight)
       .setItemHeight(buttonHight)
       .addItems(spaceshipsList)
-      .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+      .setType(ScrollableList.LIST)
       .setOpen(false)  
       ;
   }
@@ -129,5 +129,9 @@ public class UI {
       print("control event from : "+e.getController().getName());
       println(", value : "+e.getController().getValue());
     }
+  }
+
+  void getButtonHight(int h) {
+    this.buttonHight = h;
   }
 }
