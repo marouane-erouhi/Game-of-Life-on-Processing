@@ -11,7 +11,7 @@ public class UI {
 
 
     //bottom controll bar
-    String[] fpsControll = {"+", "-"};
+    String[] fpsControll = {"-", "+"};
     cp5.addButtonBar("fpsControlls")
       .setPosition(width-50, height-buttonHight)
       .setSize(50, buttonHight)
@@ -135,6 +135,18 @@ public class UI {
         case 1://clear
           for (int[] row : simulation.grid)
             Arrays.fill(row, 0);
+          break;
+        }
+      }
+
+      //fpsControlls
+      if (e.getController().getName().equals("fpsControlls")) {
+        switch(floor(e.getController().getValue())) {
+        case 0://-
+          simulation.changeFps(1);
+          break;
+        case 1://+
+          simulation.changeFps(-1);
           break;
         }
       }

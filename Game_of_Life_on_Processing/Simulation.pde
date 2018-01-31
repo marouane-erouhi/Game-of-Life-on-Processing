@@ -94,6 +94,9 @@ class Simulation {
   int[][] getGrid() {
     return this.grid;
   }
+  void setResolution(int a) {
+    resolution = a;
+  }
   void changeFps(float n) {
     if (n<=0)  this.fps++;
     else 

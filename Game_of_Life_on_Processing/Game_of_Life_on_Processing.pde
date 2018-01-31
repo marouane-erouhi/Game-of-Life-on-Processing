@@ -1,14 +1,12 @@
 import controlP5.*;
 import java.util.*;
 
-int resolution = 5;
-
-int fps = 30;
+final int resolution = 5;
+final int fps = 30;
+final int buttonHight = 20;
 
 Simulation simulation;
-
 UI ui;
-int buttonHight = 20;
 
 void setup() {
   size(400, 400);
@@ -43,6 +41,5 @@ void keyReleased() {
     case 32://pause when space is pressed
       simulation.togglePaused();
       break;
-    
   }
 }
