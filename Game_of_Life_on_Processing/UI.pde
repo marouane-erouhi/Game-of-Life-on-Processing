@@ -1,18 +1,32 @@
 //This class is resposible for all the UI components and there behaviour
 public class UI {
   private ControlP5 cp5;
-  private ButtonBar bottomBar;
   private int buttonHight;
+  private Textlabel fpsDisplay;
 
+  //private Label 
   UI(processing.core.PApplet screen, int buttonHight) {
     this.buttonHight = buttonHight;
     cp5 = new ControlP5(screen);
 
+
+    //bottom controll bar
+    String[] fpsControll = {"+", "-"};
+    cp5.addButtonBar("fpsControlls")
+      .setPosition(width-50, height-buttonHight)
+      .setSize(50, buttonHight)
+      .addItems(fpsControll);
+    //fps label
+    fpsDisplay = cp5.addLabel("fpsLabel")
+      .setPosition(width-35, height-(buttonHight/2))
+      .setSize(50, 20)
+      ;
+
     //bottom controll bar
     String[] bottomBarButtons = {"Play/Pause", "Clear"};
-    bottomBar = cp5.addButtonBar("bottom-bar")
+    cp5.addButtonBar("bottom-bar")
       .setPosition(0, height-buttonHight)
-      .setSize(width, buttonHight)
+      .setSize(width-50, buttonHight)
       .addItems(bottomBarButtons);
 
     //still lives dropdown button
@@ -58,25 +72,25 @@ public class UI {
       if (e.getController().getName().equals("Still lives")) {
         switch(floor(e.getController().getValue())) {
         case 0:
-          currentShape = "Point";
+          simulation.setCurrentShape("Point");
           break;
         case 1:
-          currentShape = "Block";
+          simulation.setCurrentShape("Block");
           break;
         case 2:
-          currentShape = "Beehive";
+          simulation.setCurrentShape("Beehive");
           break;
         case 3:
-          currentShape = "Loaf";
+          simulation.setCurrentShape("Loaf");
           break;
         case 4:
-          currentShape = "Boat";
+          simulation.setCurrentShape("Boat");
           break;
         case 5:
-          currentShape = "Tub";
+          simulation.setCurrentShape("Tub");
           break;
         default:
-          currentShape = "Point";
+          simulation.setCurrentShape("Point");
         }
       }//Still lives dropdown
 
@@ -84,16 +98,16 @@ public class UI {
       if (e.getController().getName().equals("Oscillators")) {
         switch(floor(e.getController().getValue())) {
         case 0:
-          currentShape = "Blinker";
+          simulation.setCurrentShape("Blinker");
           break;
         case 1:
-          currentShape = "Toad";
+          simulation.setCurrentShape("Toad");
           break;
         case 2:
-          currentShape = "Beacon";
+          simulation.setCurrentShape("Beacon");
           break;
         default:
-          currentShape = "Point";
+          simulation.setCurrentShape("Point");
         }
       }    //Oscillators dropdown
 
@@ -101,13 +115,13 @@ public class UI {
       if (e.getController().getName().equals("Spaceships")) {
         switch(floor(e.getController().getValue())) {
         case 0:
-          currentShape = "Glider";
+          simulation.setCurrentShape("Glider");
           break;
         case 1:
-          currentShape = "Lightweight spaceship";
+          simulation.setCurrentShape("Lightweight spaceship");
           break;
         default:
-          currentShape = "Point";
+          simulation.setCurrentShape("Point");
         }
       }    //Spaceships dropdown
 
@@ -115,11 +129,11 @@ public class UI {
       //bottom-bar logic
       if (e.getController().getName().equals("bottom-bar")) {
         switch(floor(e.getController().getValue())) {
-        case 0:
-          paused = !paused;
+        case 0://works
+          simulation.togglePaused();
           break;
         case 1://clear
-          for (int[] row : grid)
+          for (int[] row : simulation.grid)
             Arrays.fill(row, 0);
           break;
         }
@@ -131,7 +145,10 @@ public class UI {
     }
   }
 
-  void getButtonHight(int h) {
+  void setButtonHight(int h) {
     this.buttonHight = h;
+  }
+  void setFpsDisplay(int f) {
+    fpsDisplay.setText("" + f);
   }
 }
