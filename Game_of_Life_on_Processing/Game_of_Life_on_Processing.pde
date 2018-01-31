@@ -28,13 +28,8 @@ void setup() {
   //UI *********************
 
   cp5 = new ControlP5(this);
-  //String[] topBarButtons = {"Point", "Block", "Beehive", "Blinker", "Toad", "Beacon"};
-  //topBar = cp5.addButtonBar("top-bar")
-  //  .setPosition(0, 0)
-  //  .setSize(width, buttonHight)
-  //  .addItems(topBarButtons);
 
-  String[] bottomBarButtons = {"Play/Pause", "Toggle Top-Bar", "Clear"};
+  String[] bottomBarButtons = {"Play/Pause", "Clear"};
   bottomBar = cp5.addButtonBar("bottom-bar")
     .setPosition(0, height-buttonHight)
     .setSize(width, buttonHight)
@@ -197,15 +192,7 @@ void controlEvent(ControlEvent e) {
       case 0:
         paused = !paused;
         break;
-      case 1:
-        if (topBarOpen) {
-          topBarOpen = false;
-          topBar.setPosition(0, -buttonHight);
-        } else {
-          topBar.setPosition(0, 0);
-          topBarOpen = true;
-        }
-      case 2://clear
+      case 1://clear
         for (int[] row: grid)
           Arrays.fill(row, 0);
         break;
