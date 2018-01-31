@@ -6,6 +6,7 @@ TODO:
  */
 
 int grid[][];
+//GridShapes GridShapes;
 int cols, rows, resolution = 5;
 
 boolean paused = false;
@@ -25,6 +26,7 @@ void setup() {
   //fullScreen();
 
   ui = new UI(this);
+  //GridShapes = new GridShapes(grid);
 
   cols = width / resolution;
   rows = (height) / resolution;
@@ -96,7 +98,7 @@ int countNeighbors(int[][] grid, int x, int y) {
 }
 
 void mousePressed() {
-    changeCell();
+  changeCell();
 }
 void mouseWheel(MouseEvent e) {
   float event = e.getCount();
@@ -105,6 +107,9 @@ void mouseWheel(MouseEvent e) {
   } else {
     fps += -event;
   }
+}
+void keyReleased() {
+  if(keyCode == 32)  paused = !paused;//pause when space is pressed
 }
 
 void changeCell() {
@@ -115,116 +120,40 @@ void changeCell() {
     switch(currentShape) {
       //drawBlinker drawToad drawBeacon
     case "Point":
-      drawPoint(x, y);
+      GridShapes.drawPoint(x, y, grid);
       break;
     case "Block":
-      drawBlock(x, y);
+      GridShapes.drawBlock(x, y, grid);
       break;
     case "Beehive":
-      drawBeehive(x, y);
+      GridShapes.drawBeehive(x, y, grid);
       break;
     case "Blinker":
-      drawBlinker(x, y);
+      GridShapes.drawBlinker(x, y, grid);
       break;
     case "Toad":
-      drawToad(x, y);
+      GridShapes.drawToad(x, y, grid);
       break;
     case "Beacon":
-      drawBeacon(x, y);
+      GridShapes.drawBeacon(x, y, grid);
       break;
     case "Loaf":
-      drawLoaf(x,y);
+      GridShapes.drawLoaf(x, y, grid);
       break;
     case "Boat":
-      drawBoat(x,y);
+      GridShapes.drawBoat(x, y, grid);
       break;
     case "Tub":
-      drawTub(x,y);
+      GridShapes.drawTub(x, y, grid);
       break;
     case "Glider":
-      drawGlider(x,y);
+      GridShapes.drawGlider(x, y, grid);
       break;
     case "Lightweight spaceship":
-      drawLightweightSpaceship(x,y);
+      GridShapes.drawLightweightSpaceship(x, y, grid);
       break;
     }
   }
   catch(Exception e) {//edges cause an out of bounds for larger objects
   }
-}
-
-//SHAPES
-void drawPoint(int x, int y) {
-  grid[x][y] = (grid[x][y] == 1) ? 0 : 1;
-}
-//start from top left cell
-void drawBlock(int x, int y) {
-  grid[x][y] = 1;
-  grid[x+1][y] = 1;
-  grid[x][y+1] = 1;
-  grid[x+1][y+1] = 1;
-}
-void drawBeehive(int x, int y) {
-  grid[x+1][y] = 1;
-  grid[x+2][y] = 1;
-
-  grid[x+1][y+2] = 1;
-  grid[x+2][y+2] = 1;
-
-  grid[x][y+1] = 1;
-  grid[x+3][y+1] = 1;
-}
-void drawBlinker(int x, int y) {
-  grid[x-1][y] = 1;
-  grid[x][y] = 1;
-  grid[x+1][y] = 1;
-}
-void drawToad(int x, int y) {
-  drawBlinker(x+1, y);
-  drawBlinker(x, y+1);
-}
-void drawBeacon(int x, int y) {
-  drawBlock(x, y);
-  drawBlock(x+2, y+2);
-}
-void drawLoaf(int x, int y){
-  grid[x+1][y] = 1;
-  grid[x+2][y] = 1;
-  grid[x][y+1] = 1;
-  grid[x+3][y+1] = 1;
-  grid[x+1][y+2] = 1;
-  grid[x+3][y+2] = 1;
-  grid[x+2][y+3] = 1;
-}
-
-void drawBoat(int x, int y){
-  drawBlock(x,y);
-  grid[x+1][y+1] = 0;
-  grid[x+2][y+1] = 1;
-  grid[x+1][y+2] = 1;
-}
-
-void drawTub(int x, int y){
-  drawBoat(x,y);
-  grid[x][y] = 0;
-}
-
-void drawGlider(int x, int y){
-  drawBlock(x+1,y+1);
-  grid[x+1][y+1] = 0;
-  grid[x][y+1] = 1;
-  grid[x+2][y] = 1;
-}
-
-void drawLightweightSpaceship(int x, int y){
-  grid[x+1][y] = 1;
-  grid[x][y+1] = 1;
-  grid[x+4][y] = 1;
-  grid[x+4][y+2] = 1;
-  
-  drawBlock(x,y+2);
-  grid[x+1][y+2] = 0;
-  
-  grid[x+2][y+3] = 1;
-  grid[x+3][y+3] = 1;
 }
