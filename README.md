@@ -12,7 +12,7 @@ Basic usage controls:
  * Clear the simulation for an empty canvas
 
 
-![Screenshot of the program](./img/game-of-life-screenshot.png)
+![Screenshot of the program](./img/game-of-life-screenshot1.png)
 
 
 Learn more [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
